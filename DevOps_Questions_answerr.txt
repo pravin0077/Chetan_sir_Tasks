@@ -1,0 +1,504 @@
+_______________________________________________DevOps Questions_______________________________________________
+
+
+1)How can you merge multiple commits into one commit id?
+ANS---> 
+(git rebase -i branch_name)
+(it will display "your branch and origin// have diverged and have 1 and 1 different commits each")
+(how to use):
+git checkout branch_name(desired_branch_name)
+git rebase -i main(branch_name)
+git checkout main
+git merge desired_branch
+
+
+***********************************************************************************************************************************
+2)What is git diff?
+ANS--->
+
+git diff is a command-line tool in Git that displays the differences between two commits, branches, or any other Git objects. 
+It's a fundamental command used to compare changes between different versions of files within a Git repository
+Command $git diff
+Git compares the changes between the current state of your working directory and the staging area (index).
+This shows you the differences between the changes you've made but haven't staged yet.
+
+ex one file alreday presnet in repository with name xyz.txt we have madhe changes in file and write pravin and praivn2
+and saving it it will show below o/p after running git diff command
+
+$git diff
+o/p
+index e69de29..6a9d1c8 100644
+--- a/q2
++++ b/q2
+@@ -0,0 +1,2 @@
++pravin
++pravin2
+
+we cann run the below command asleo after made change in file for bettre understanding
+
+git diff --color-words
+
+git diff --color-words <file name>--------- for specific file
+
+2 To see the changes between the files in the staging area (index) and the last commit, you can use:
+if we run git diff after running file git add . that time not showing the changes with command git diff
+so we can use the belo commnad for that chages are in staging area  or last commit
+
+git diff --staged --- showing all chnages
+git diff --staged <file name> showing only changes of perticuler
+
+3 showing differnece between two commit of same files
+first use git log command for getting all commit or git log <file name for perticuler file>
+
+git diff <commit1> <commit2>
+git diff <commit1> <commit2> --color-word <file namee> showing for perticuler file
+
+4
+To see the differences between two branches
+git diff <branch1> <branch2>
+
+ex git diff master pravin
+ 
+
+
+***********************************************************************************************************************************
+3) How can we drop multiple indexing files in stash?
+
+ANS--->
+
+use below commmand
+
+git stash clear  -------------- delete all stash on one command for all indexex
+
+or
+
+In Git, we can drop multiple files from the stash using the git stash drop command followed
+by the stash reference or index of the stash and the list of files we want to drop by using the below command
+
+git stash drop stash@{<index>} <file1> <file2> ...... ---here we can give multiple files indx [0] 
+
+ex git stash drop stash@{1} <f1><f2><f3>
+
+If we want to drop files from the most recent stash (which is usually at index 0), you can omit the stash index:
+
+git stash drop <file1> <file2> ...
+
+
+
+***********************************************************************************************************************************
+4) Branching strategies workflow.
+
+***********************************************************************************************************************************
+5) Ansible tower configuration and setup
+
+ANS--->
+
+--------------------------installation of ANSIBLE----------------------------------------
+
+create no of instances from aws account of lunix or ubuntu
+make one is ansible server and other are servers or we can say its node
+first do configuration on ansible server usnig  below command
+
+--sudo apt-get update -y
+
+sudo apt install software-properties-common
+
+sudo apt-add-repository ppa:ansible/ansible
+
+sudo apt-get install ansible -y
+
+sudo ansible --version
+
+sudo apt-get update -y
+
+ssh -keygen -----by using this command generate private and public key the key is present on path /home/ubuntu/.ssh/id_rsa.pub
+
+cd /home/ubuntu/.ssh/id_rsa.pub
+cat id_rsa.pub
+
+or
+
+cat /home/ubuntu/.ssh/id_rsa.pub -------->copy the pub key and paste it into the node servers path
+
+vim .ssh/autorizedkey  ----path on node severs for paste public key
+
+-sudo vim /etc/ansible/hosts (Add ip of host instance)
+-ansible-config init --disable -t all >ansible.cfg (for Ansible confrigution file)
+-sudo vim ansible.cfg
+-line 137 uncomment
+-line 209 uncamment and add private key file path (/home/ubuntu/.ssh/id_rsa)
+-line 220 uncomment and add remote_user=ubuntu
+-line 318 uncomment and add host_key_checking=false
+-save file
+
+-------node/target server configuration--------
+
+sudo apt update -y
+
+sudo apt-get install python3
+
+sudo vim authorized_keys (paste key here)
+
+------------------------check on master----
+after the done the configuration on node servers chek the conncetivit on ansible main server
+
+ssh@ubuntu (PublicIP of node/targetservers)
+ex ssh @ubuntu172.30.0.0
+
+ansible -m ping all
+
+***********************************************************************************************************************************
+6) Make connections to the Ansible master server with nodes which are present on premises as well as on cloud.
+
+ANS--->
+
+First ins ANSIBLE then do thw following steps
+
+store the public ip of node to main servers hosts file at and or at the line 25 and uncomment at line 20
+
+sudo vim  /etc/ansible/hosts 
+
+
+ssh -keygen -----by using this command generate private and public key the key is present on path /home/ubuntu/.ssh/id_rsa.pub
+
+cd /home/ubuntu/.ssh/id_rsa.pub
+cat id_rsa.pub
+
+or
+
+cat /home/ubuntu/.ssh/id_rsa.pub -------->copy the pub key and paste it into the node servers path
+
+and check with the following command
+
+ansible -m oing all
+or
+
+we can directly connect to perticuler node using below command
+
+ssh public ip and after that press enetr
+
+-------node/target server configuration--------
+
+sudo vim authorized_keys (paste key here)
+
+
+***********************************************************************************************************************************
+
+
+7) Write a single playbook with global and local variables.
+
+ANS--->
+
+---
+- name : "play book for global_andl_ocal"
+  hosts : all
+  gather_facts: yes 
+  vars :
+          URL : "www.globalcom"
+  tasks:
+   - name : "Task by Pravin for global"
+     debug:
+      msg: "{{URL}}"
+   - name : "Task by Pravin for for local"
+     vars :
+       URL : "www.local.com"
+     debug:
+      msg: "{{URL}}"
+	  
+	  
+***********************************************************************************************************************************************	  
+
+
+8) Write a script for the prompt variable.
+
+ANS--->
+
+---
+- name:
+  hosts: demo
+  vars_prompt:
+    - name: user
+      prompt: Give username......
+	  #private yes/no if yes its hide waht we are typeing if no it will showing what we are typing
+      private: no
+  tasks:
+    - name: Print the variables that user provided
+      debug:
+        msg: "User is..... {{ user }}"
+
+***********************************************************************************************************************************
+9) Write a script for git pull push where the commit message will be the same.
+
+ANS--->
+
+-------script for push into repository with same messge every time------
+
+#! /bin/bash
+
+cd /home/ubuntu/myworkspace/devopsprac
+git add .
+git commit -m "latesupdate"
+git push origin master
+##git pull origin master
+
+-------------script for push into repository with new updated messge every time------
+#! /bin/bash
+
+#showing prompt for weite new updated messege
+
+echo "what is your comment_messege....?"
+
+#### reading message from cli
+read comment
+
+##path of our repository
+cd /home/ubuntu/myworkspace/devopsprac
+
+##git commands
+git add .
+
+git commit -m $comment
+
+git push origin master
+
+
+-------------------------script for ppull data----------
+#! /bin/bash
+
+cd /home/ubuntu/myworkspace/devopsprac
+
+git pull origin master
+
+*************************************************************************************************************************************************************
+
+10) Write a playbook in ansible which package install,start,enable,deployment, uninstall modules are present.
+
+ANS--->
+
+- name: Installation of my web-server
+  #hosts: 65.0.12.7
+  hosts: all
+  become: yes
+  tasks:
+    # - name: install web package
+    #   package:
+    #     name: httpd
+    #     state: latest
+    #   when: ansible_os_family == "RedHat"
+  
+    - name: install web package
+      package:
+        name: apache2
+        state: latest
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    # - name: start httpd
+    #   systemd:
+    #     name: httpd
+    #     state: started
+    #   when: ansible_os_family == "RedHat"
+
+    - name: start apache2
+      systemd:
+        name: apache2
+        state: started
+      when: ansible_os_family == "Debian"
+    
+    - name: enable apache2
+      service:
+        name: apache2
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+   # - name: enable httpd
+    #  service:
+     #   name: httpd
+      #  enabled: yes
+   #   when: ansible_os_family == "Debian"
+    
+	# If you want to uninstall the Apache2 package, uncomment the following task
+    #- name: Uninstall Apache2 package
+     # package:
+      #   name: apache2
+       #  state: absent
+        # update_cache: yes
+    #  when: ansible_os_family == "Debian"
+    # If you want to uninstall the httpd package, uncomment the following task
+    #- name: uninstall the httpd package
+    #  package:
+     #    name: apache2
+      #   state: absent
+       #  update_cache: yes
+      #when: ansible_os_family == "Debian"
+	
+***********************************************************************************************************************************
+11) Difference between ad hoc and vault.
+
+ANS--->
+
+Ad hoc commands:
+
+Ad hoc commands are commands that are executed directly from the command line without the need for writing a separate script or playbook.
+In the context of Ansible, ad hoc commands are used for performing quick tasks or one-off operations on managed nodes without creating a full playbook.
+Ad hoc commands are suitable for tasks like gathering information, installing packages, restarting services, etc., on remote nodes.
+
+Vault:
+
+Vault is a tool developed by HashiCorp that is used for secrets management, data protection, and encryption as a service.
+It provides a centralized solution for managing sensitive data such as passwords, API keys, certificates, and encryption keys.
+Vault offers features like dynamic secrets generation, encryption as a service, access control policies, audit logging, and more.
+Vault helps organizations securely store, access, and manage secrets across different environments, including development, testing, and production.
+
+In summary, ad hoc commands are used for ad hoc operations and quick tasks on remote nodes managed by Ansible, while Vault is used for managing sensitive data,
+secrets, and encryption in a secure and centralized manner. They serve different purposes and are not directly comparable as they address different aspects of
+infrastructure management and security. However, both tools can complement each other within a comprehensive infrastructure management and security strategy.
+***********************************************************************************************************************************
+
+12) Create a Directory and 3 files inside that directory with any content put into the script, when we run the script in
+ output we have to show the output of all three files. This script has to run without execution permission.
+ 
+ANS--->
+
+script 1
+
+#!/bin/bash
+
+# Create a directory
+mkdir patil2
+
+# Create three files inside the directory with some content
+echo "i am file1 from patil2 directory" > /home/ubuntu/patil2/file1.txt
+echo "i am file 2 from patil2 directory" > /home/ubuntu/patil2/file2.txt
+echo "i am file 3 from patil2 directory" > /home/ubuntu/patil2/file3.txt
+
+# Output the contents of the three files
+echo "Contents of file 1:"
+cat /home/ubuntu/patil2/file1.txt
+
+echo "Contents of file 2:"
+cat /home/ubuntu/patil2/file2.txt
+
+echo "Contents of file 3:"
+cat /home/ubuntu/patil2/file3.txt
+
+**********************************************************************
+o/p of first script
+
+ubuntu@ip-172-31-33-153:~$ bash ./readffromdir.sh
+Contents of file 1:
+i am file1 from patil2 directory
+Contents of file 2:
+i am file 2 from patil2 directory
+Contents of file 3:
+i am file 3 from patil2 directory
+ubuntu@ip-172-31-33-153:~$
+
+--------------------------------------------
+file permission here we can also see file pemitaion not in execute state but we run it using bash commnad
+ubuntu@ip-172-31-33-153:~$ ls -lrt
+total 8
+-rw-r--r-- 1 root   root    557 Feb 28 21:19 readffromdir.sh-----------script
+drwxrwxr-x 2 ubuntu ubuntu 4096 Feb 28 21:20 patil2
+ubuntu@ip-172-31-33-153:~$
+
+--------------------------------------------
+
+or
+
+script2
+
+#!/bin/bash
+
+cd /home/ubuntu/patil
+
+# Output the contents of the three files
+echo "Contents of file 1:"
+cat /home/ubuntu/patil/test1
+
+echo "Contents of file 2:"
+cat /home/ubuntu/patil/test2
+
+echo "Contents of file 3:"
+cat /home/ubuntu/patil/test2 
+
+-------------------------
+o/p of second directory
+
+ubuntu@ip-172-31-45-162:~/patil$ bash ./read.sh
+Contents of file 1:
+hi
+Contents of file 2:
+my name is
+Contents of file 3:
+pravin
+ubuntu@ip-172-31-45-162:~/patil$
+
+----------------------------------------------------------
+
+here we can also see file pemitaion not in execute state but we run it using bash commnad
+
+ubuntu@ip-172-31-45-162:~/patil$ ll
+total 24
+drwxrwxr-x 2 ubuntu ubuntu 4096 Feb 28 21:09 ./
+drwxr-xr-x 6 ubuntu ubuntu 4096 Feb 28 21:04 ../
+-rw-r--r-- 1 root   root    247 Feb 28 21:09 read.sh------------script
+-rw-rw-r-- 1 ubuntu ubuntu    3 Feb 28 21:05 test1
+-rw-rw-r-- 1 ubuntu ubuntu   11 Feb 28 21:05 test2
+-rw-rw-r-- 1 ubuntu ubuntu    7 Feb 28 21:05 test3
+ubuntu@ip-172-31-45-162:~/patil$
+
+
+***********************************************************************************************************************************
+13) how to view the hidden value prompt url.
+
+ANS--->
+
+just change in plabook here private: yes to private: no
+	
+	refer below example
+	
+---
+- name:
+  hosts: demo
+  vars_prompt:
+    - name: user
+      prompt: Give username......
+      private: no
+  tasks:
+    - name: Print the variables that user provided
+      debug:
+        msg: "User is..... {{ user }}"
+***********************************************************************************************************************************
+14)  what is hashes in terraform.
+
+ANS--->
+
+In Terraform, a "hash" generally refers to a map or dictionary data structure, also known as a hash table or associative array in other programming languages.
+
+In Terraform's HashiCorp Configuration Language (HCL), a hash is represented using curly braces {} and key-value pairs separated by colons :. 
+For example
+variable "example" {
+  type = map(string)
+  default = {
+    key1 = "value1"
+    key2 = "value2"
+  }
+}
+
+Here, { key1 = "value1", key2 = "value2" } is a hash with two key-value pairs. Keys are unique within a hash, and each key is associated
+with a specific value. Hashes are useful in Terraform for representing structured data, configuration options, or resource attributes.
+
+Terraform uses hashes extensively, for example:
+
+Input variables can be defined as hashes to allow passing structured data to modules.
+Resource attributes are often represented as hashes in Terraform's state file, which tracks the current state of infrastructure.
+Outputs from modules or resources can be returned as hashes.
+Overall, hashes in Terraform provide a flexible and convenient way to represent and manipulate structured data within configuration files.
+
+
+
+
+
+
+
