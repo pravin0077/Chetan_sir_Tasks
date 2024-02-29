@@ -1,0 +1,14 @@
+2)DB ->table->item->attrributes
+migrate data  from on-premise [S3] to Dynamo db(migration)
+
+Ans--->
+
+step 1 crate one s3 bucket in aws account and uplaod the json or csv files
+
+step 2 serach dynamodb in aws search bar after thet we cn see import from s3 option at left side of panel
+
+step 3 select import fom s3 browse s3 buckte  where actual files are store at bottm select amazon json or csv as per format the  click on next
+
+step 4 itshown create table give table name and primary key name and click on creat table option
+
+step 5 now showing data are importing after successfully select table and click on option at right sdie top explore table items and view data from table   
