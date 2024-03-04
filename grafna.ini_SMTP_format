@@ -1,0 +1,11 @@
+[smtp]
+enabled = true
+host = smtp.gmail.com:587   
+user = mipravin25@gmail.com    
+password = 9763555326 
+skip_verify = true        
+from_address = mipravin25@gmail.com
+from_name = Grafana
+---------------------------
+smtp grafna app password
+xgcv abwi fdho vonv
