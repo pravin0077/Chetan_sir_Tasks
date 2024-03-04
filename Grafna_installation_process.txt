@@ -1,0 +1,44 @@
+after installation check login
+http://13.201.135.161:3000/login
+
+link for install prometheus/node_exporter/garafana
+
+https://www.linode.com/docs/guides/how-to-install-prometheus-and-grafana-on-ubuntu/
+
+
+1 Install some required utilities using apt.
+
+sudo apt-get install -y apt-transport-https software-properties-common
+
+2 Import the Grafana GPG key.
+
+sudo wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+
+3 Add the Grafana “stable releases” repository
+echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+4 Update the packages in the repository, including the new Grafana package.
+
+sudo apt-get update
+
+5 Install the open-source version of Grafana.
+
+Note
+To install the Enterprise edition of Grafana, use the command sudo apt-get install grafana-enterprise instead.
+
+sudo apt-get install grafana
+
+6 Reload the systemctl daemon.
+
+sudo systemctl daemon-reload
+
+7 Enable and start the Grafana server. Using systemctl enable configures the server to launch Grafana when the system boots.
+
+sudo systemctl enable grafana-server.service
+sudo systemctl start grafana-server
+
+8 Verify the status of the Grafana server and ensure it is in the active state.
+
+sudo systemctl status grafana-server
+
+after installation complete refer the file grafana configuration
